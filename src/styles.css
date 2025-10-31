@@ -1,0 +1,29 @@
+@import "tailwindcss";
+
+@font-face {
+  font-family: 'DejaVu Sans';
+  src: local('DejaVu Sans');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@layer components {
+
+  .typo-h1 {
+    @apply font-sans text-[22px] font-medium;
+  }
+  .typo-h2 {
+    @apply font-sans text-base font-medium;
+  }
+  .typo-sub {
+    @apply font-sans text-[13px] text-gray-700;
+  }
+  .typo-body {
+    @apply font-sans text-[11px] text-gray-800;
+  }
+
+  .input {
+    @apply border rounded-xl border-gray-400 p-2 placeholder:text-gray-400 outline-none w-full
+  }
+}

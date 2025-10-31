@@ -1,0 +1,102 @@
+<div class="min-h-screen flex items-center justify-center bg-gray-50 gap-x-20">
+  <form
+    [formGroup]="loginForm"
+    (ngSubmit)="onSubmit()"
+    class="rounded-xl border border-gray-300 w-full max-w-[500px] grid grid-rows-4 gap-4 p-4 bg-white shadow min-h-[350px]"
+  >
+    <div class="flex flex-col gap-y-4 row-span-1 row-end-1">
+      <h1 class="typo-h1">Sign in</h1>
+
+      @switch (status$ | async) { @case ('submitting') {
+      <span class="text-gray-400">Status: Submitting…</span>
+      } @case ('success') {
+      <span class="text-green-400">Status: Success</span>
+      } @case ('error') {
+      <span class="text-red-600">Status: Error</span>
+      } @default {
+      <span class="text-gray-400">Status: Idle</span>
+      } } @if (errorMsg$ | async; as errMsg) {
+      <div class="text-red-600">{{ errMsg }}</div>
+      }
+    </div>
+    <div class="w-full row-span-2 h-min">
+      <input
+        type="email"
+        id="email"
+        formControlName="email"
+        required
+        placeholder="you@example.com"
+        class="input"
+      />
+      @if (showError('email', 'required')) {
+      <p class="text-red-600 typo-caption">Email is required.</p>
+      } @else if (showError('email', 'email')) {
+      <p class="text-red-600 typo-caption">Please enter a valid email address.</p>
+      }
+    </div>
+    <div class="w-full row-span-3 h-min">
+      <input
+        type="text"
+        id="password"
+        formControlName="password"
+        placeholder="••••••••"
+        required
+        class="input"
+      />
+      <!-- პაროლი უნდა ჩანდესო წერია თასქში -->
+      @if (showError('password')) {
+      <p class="text-red-600 typo-caption">Password must be at least 6 characters long.</p>
+      }
+    </div>
+
+    <div class="row-span-4 flex flex-col gap-y-3">
+      <button
+        type="submit"
+        [disabled]="loginForm.invalid || (status$ | async) === 'submitting'"
+        class="w-full rounded-xl bg-blue-600 text-white py-2 hover:bg-blue-500 disabled:opacity-30 cursor-pointer disabled:cursor-not-allowed h-12"
+      >
+        Sign in
+      </button>
+      <button
+        type="button"
+        class="w-full rounded-xl text-white bg-red-600 py-2 opacity-80 cursor-pointer h-12"
+        (click)="simulateError()"
+      >
+        Simulate error
+      </button>
+    </div>
+  </form>
+
+  @if (payload$ | async; as payload) {
+  <form
+    class="rounded-xl border border-gray-300 w-full max-w-[500px] grid grid-rows-4 gap-4 p-4 bg-white shadow min-h-[350px]"
+  >
+    <h1>Last Submission</h1>
+    <div class="w-full">
+      <label for="email" class="typo-caption">Email</label>
+      <input type="email" id="email" required class="input" [value]="payload.email" readonly />
+    </div>
+    <div class="w-full">
+      <label for="password" class="typo-caption">Password</label>
+      <input type="text" id="password" required class="input" [value]="payload.password" readonly />
+    </div>
+    <div class="w-full">
+      <label for="submittedAt" class="typo-caption"> Submitted at</label>
+      <input
+        type="text"
+        id="submittedAt"
+        [value]="payload.submittedAt | date : 'medium'"
+        readonly
+        class="input bg-gray-100"
+      />
+    </div>
+    <button
+      type="button"
+      class="w-full rounded-xl bg-blue-600 text-white py-2 hover:bg-blue-500 disabled:opacity-30 cursor-pointer disabled:cursor-not-allowed h-12 mt-5"
+      (click)="onClearPreview()"
+    >
+      Clear Preview
+    </button>
+  </form>
+  }
+</div>
