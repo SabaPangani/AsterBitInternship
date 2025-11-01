@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthSubmissionService } from '../services/auth-submission.service';
-import { Observable, timer } from 'rxjs';
+import { Observable } from 'rxjs';
 import { Status, SubmittedPayload } from '../models/auth';
 import { AsyncPipe, CommonModule } from '@angular/common';
 
