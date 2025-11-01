@@ -59,4 +59,6 @@ export class Login implements OnInit {
   onSimulateError(): void {
     this.auth.simulateError();
   }
+
+  // აქ ვფიქრობდი ngOnDestroy() მეთოდის დამატებას, მაგრამ ასეთი პატარა კომპონენტისთვის აღარ გამოვიყენე
 }
