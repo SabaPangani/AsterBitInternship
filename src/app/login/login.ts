@@ -45,20 +45,18 @@ export class Login implements OnInit {
       return;
     }
     this.auth.submit(this.loginForm.value);
-    const sub = this.status$.subscribe((s) => {
+    this.status$.subscribe((s) => {
       if (s === 'success') {
         this.loginForm.reset();
         this.loginForm.markAsPristine();
         this.loginForm.markAsUntouched();
-        // timer(500).subscribe(() => this.auth.clear());
-        sub.unsubscribe();
       }
     });
   }
   onClearPreview(): void {
     this.auth.clear();
   }
-  simulateError(): void {
+  onSimulateError(): void {
     this.auth.simulateError();
   }
 }

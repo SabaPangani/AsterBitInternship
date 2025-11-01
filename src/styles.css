@@ -6,6 +6,7 @@
   font-weight: 100 900;
   font-style: normal;
   font-display: swap;
+  line-height: 1.5;
 }
 
 @layer components {

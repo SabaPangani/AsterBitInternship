@@ -6,27 +6,27 @@ import { BehaviorSubject, catchError, of, switchMap, tap, throwError, timer } fr
   providedIn: 'root',
 })
 export class AuthSubmissionService {
-  private payloadSource = new BehaviorSubject<SubmittedPayload | null>(null);
+  private payloadSource$  = new BehaviorSubject<SubmittedPayload | null>(null);
 
-  payload$ = this.payloadSource.asObservable();
+  payload$ = this.payloadSource$.asObservable();
 
-  private statusSource = new BehaviorSubject<'idle' | 'submitting' | 'success' | 'error'>('idle');
+  private statusSource$ = new BehaviorSubject<'idle' | 'submitting' | 'success' | 'error'>('idle');
 
-  status$ = this.statusSource.asObservable();
+  status$ = this.statusSource$.asObservable();
 
-  private errorMessageSource = new BehaviorSubject<string | null>(null);
+  private errorMessageSource$ = new BehaviorSubject<string | null>(null);
 
-  errorMessage$ = this.errorMessageSource.asObservable();
+  errorMessage$ = this.errorMessageSource$.asObservable();
 
   constructor() {}
 
   submit(value: FormValue): void {
-    if (this.statusSource.value === 'submitting') {
+    if (this.statusSource$.value === 'submitting') {
       return;
     }
 
-    this.statusSource.next('submitting');
-    this.errorMessageSource.next(null);
+    this.statusSource$.next('submitting');
+    this.errorMessageSource$.next(null);
 
     timer(1000)
       .pipe(
@@ -39,12 +39,12 @@ export class AuthSubmissionService {
           return of(payload);
         }),
         tap((payload) => {
-          this.payloadSource.next(payload);
-          this.statusSource.next('success');
+          this.payloadSource$.next(payload);
+          this.statusSource$.next('success');
         }),
         catchError((err) => {
-          this.errorMessageSource.next('Something went wrong');
-          this.statusSource.next('error');
+          this.errorMessageSource$.next('Something went wrong');
+          this.statusSource$.next('error');
           return throwError(() => err);
         })
       )
@@ -52,15 +52,15 @@ export class AuthSubmissionService {
   }
 
   clear(): void {
-    this.payloadSource.next(null);
-    this.errorMessageSource.next(null);
-    this.statusSource.next('idle');
+    this.payloadSource$.next(null);
+    this.errorMessageSource$.next(null);
+    this.statusSource$.next('idle');
   }
 
   simulateError(): void {
-    if (this.statusSource.value === 'submitting') return;
+    if (this.statusSource$.value === 'submitting') return;
 
-    this.errorMessageSource.next('Simulated error');
-    this.statusSource.next('error');
+    this.errorMessageSource$.next('Simulated error');
+    this.statusSource$.next('error');
   }
 }

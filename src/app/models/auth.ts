@@ -8,5 +8,5 @@ export interface FormValue {
 export interface SubmittedPayload {
   email: string;
   password: string; 
-  submittedAt: string;
+  submittedAt: string | number;
 }
